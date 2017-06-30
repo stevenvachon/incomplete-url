@@ -19,8 +19,9 @@
   },
   "scripts": {
     "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
-    "posttest": "nyc report --reporter=html && browserify index.js --global-transform [ babelify --presets [ es2015 ] ] --standalone minURL | uglifyjs --compress --mangle | gzip-size",
-    "test": "nyc --reporter=text-summary mocha test --check-leaks --bail"
+    "posttest": "nyc report --reporter=html",
+    "test2": "nyc --reporter=text-summary mocha test --check-leaks --bail",
+    "test": "mocha test --check-leaks --bail"
   },
   "files": [
     "index.js"
