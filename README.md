@@ -1,4 +1,4 @@
-# incomplete-url [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
+# incomplete-url [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency Monitor][greenkeeper-image]][greenkeeper-url]
 
 > Custom-remove features of a WHATWG [`URL`](https://developer.mozilla.org/en/docs/Web/API/URL) implementation.
 
@@ -43,3 +43,7 @@ When set to `true`, the output `URLSearchParams` class (and `URL#searchParams`) 
 [npm-url]: https://npmjs.org/package/incomplete-url
 [travis-image]: https://img.shields.io/travis/stevenvachon/incomplete-url.svg
 [travis-url]: https://travis-ci.org/stevenvachon/incomplete-url
+[coveralls-image]: https://img.shields.io/coveralls/stevenvachon/incomplete-url.svg
+[coveralls-url]: https://coveralls.io/github/stevenvachon/incomplete-url
+[greenkeeper-image]: https://badges.greenkeeper.io/stevenvachon/incomplete-url.svg
+[greenkeeper-url]: https://greenkeeper.io/

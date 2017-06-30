@@ -7,57 +7,71 @@ const customizeURL = (options={}) =>
 {
 	const IncompleteURLSearchParams = function(params)
 	{
+		if (params instanceof IncompleteURLSearchParams)
+		{
+			params = params._searchParams;
+		}
+
 		this._searchParams = new URLSearchParams(params);
 
-		// Support iteration and `Array.from()`
 		this[Symbol.iterator] = () => this.entries();
-
 		this[Symbol.toStringTag] = this._searchParams[Symbol.toStringTag];
 
-		// Extend all `URLSearchParams` methods except `sort`
+		// Extend all `URLSearchParams` methods except perhaps `sort`
 		Object.keys(URLSearchParams.prototype)
-		.filter(key => 
+		.filter(key => options.noSort ? key!=="sort" : true)
+		.forEach(key => this[key] = (...args) =>
 		{
-			if (options.noSort)
+			const returnValue = this._searchParams[key](...args);
+
+			if ((key==="append" || key==="delete" || key==="set" || key==="sort") && typeof this._callback==="function")
 			{
-				return key !== "sort";
+				this._callback();
 			}
-			else
-			{
-				return true;
-			}
-		})
-		.forEach(key => this[key] = (...args) => this._searchParams[key].call(this._searchParams, ...args));
+
+			return returnValue;
+		});
 	};
 
 	const IncompleteURL = function(url, base)
 	{
+		const setSearchParams = value =>
+		{
+			this._searchParams = new IncompleteURLSearchParams(value);
+
+			this._searchParams._callback = () =>
+			{
+				const newValue = this._searchParams.toString();
+				this._url.search = newValue === "" ? newValue : `?${newValue}`;
+			};
+		};
+
+		if (url instanceof IncompleteURL)
+		{
+			url = url._url;
+		}
+
+		if (base instanceof IncompleteURL)
+		{
+			base = base._url;
+		}
+
 		this._url = new URL(url, base);
-		this._searchParams = new IncompleteURLSearchParams(this._url.search);
+
+		setSearchParams(this._url.search);
 
 		this[Symbol.toStringTag] = this._url[Symbol.toStringTag];
 
-		// Extend all `URL` getters except perhaps `searchParams`
+		// Extend all `URL` getters/setters except perhaps `searchParams`
 		Object.keys(URL.prototype)
-		.filter(key =>
-		{
-			if (options.noSearchParams)
-			{
-				return key !== "searchParams";
-			}
-			else
-			{
-				return true;
-			}
-		})
+		.filter(key => options.noSearchParams ? key!=="searchParams" : true)
 		.forEach(key =>
 		{
 			if (key === "searchParams")
 			{
 				Object.defineProperty(this, key,
 				{
-					get: () => this._searchParams,
-					set: newValue => this._searchParams = newValue
+					get: () => this._searchParams
 				});
 			}
 			else
@@ -71,16 +85,16 @@ const customizeURL = (options={}) =>
 
 						if (key === "search")
 						{
-							this._searchParams = new IncompleteURLSearchParams(newValue);
+							setSearchParams(newValue);
+						}
+						else if (key === "href")
+						{
+							setSearchParams(this._url.search);
 						}
 					}
 				});
 			}
 		});
-
-		//this.search = "";
-		this.searchParams.append("body", "value")
-		console.log(Array.from(this.searchParams))
 	};
 
 	return { IncompleteURL, IncompleteURLSearchParams };

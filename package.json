@@ -1,7 +1,7 @@
 {
   "name": "incomplete-url",
   "description": "Custom-remove features of a WHATWG URL implementation.",
-  "version": "0.1.0",
+  "version": "1.0.2",
   "license": "MIT",
   "author": "Steven Vachon <contact@svachon.com> (https://www.svachon.com/)",
   "repository": "stevenvachon/incomplete-url",
@@ -19,12 +19,10 @@
   },
   "scripts": {
     "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
-    "posttest": "nyc report --reporter=html && browserify index.js --global-transform [ babelify --presets [ es2015 ] ] --standalone minURL | uglifyjs --compress --mangle | gzip-size",
+    "posttest": "nyc report --reporter=html",
     "test": "nyc --reporter=text-summary mocha test --check-leaks --bail"
   },
-  "files": [
-    "index.js"
-  ],
+  "files": ["index.js"],
   "keywords": [
     "uri",
     "url",
