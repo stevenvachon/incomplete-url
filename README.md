@@ -1,5 +1,7 @@
 # incomplete-url [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/stevenvachon/incomplete-url.svg)](https://greenkeeper.io/)
+
 > Custom-remove features of a WHATWG [`URL`](https://developer.mozilla.org/en/docs/Web/API/URL) implementation.
 
 
