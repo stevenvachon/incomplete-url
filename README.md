@@ -40,7 +40,7 @@ When set to `true`, the output `URLSearchParams` class (and `URL#searchParams`) 
 
 
 [npm-image]: https://img.shields.io/npm/v/incomplete-url.svg
-[npm-url]: https://npmjs.org/package/incomplete-url
+[npm-url]: https://npmjs.com/package/incomplete-url
 [travis-image]: https://img.shields.io/travis/stevenvachon/incomplete-url.svg
 [travis-url]: https://travis-ci.org/stevenvachon/incomplete-url
 [coveralls-image]: https://img.shields.io/coveralls/stevenvachon/incomplete-url.svg
