@@ -5,7 +5,7 @@ const {expect} = require("chai");
 
 
 
-it("behaves no differently by default", function()
+it("behaves no differently by default", () =>
 {
 	const {IncompleteURL, IncompleteURLSearchParams} = customizeURL();
 
@@ -57,9 +57,9 @@ it("behaves no differently by default", function()
 
 
 
-describe("options", function()
+describe("options", () =>
 {
-	it("noSearchParams = true", function()
+	it("noSearchParams = true", () =>
 	{
 		const options = { noSearchParams:true };
 		const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
@@ -71,7 +71,7 @@ describe("options", function()
 
 
 
-	it("noSort = true", function()
+	it("noSort = true", () =>
 	{
 		const options = { noSort:true };
 		const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
@@ -85,7 +85,7 @@ describe("options", function()
 
 
 
-	it("all options true", function()
+	it("all options true", () =>
 	{
 		const options = { noSearchParams:true, noSort:true };
 		const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
