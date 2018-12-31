@@ -3,13 +3,45 @@ const customizeURL = require("./");
 const {describe, it} = require("mocha");
 const {expect} = require("chai");
 
+const paramsProperties =
+[
+	"append",
+	"delete",
+	"entries",
+	"get",
+	"getAll",
+	"has",
+	"keys",
+	"set",
+	"sort",
+	// "toString" excluded because Object::toString exists
+	"values"
+];
+
+const urlProperties =
+[
+	"hash",
+	"host",
+	"hostname",
+	"href",
+	"origin",
+	"password",
+	"pathname",
+	"port",
+	"protocol",
+	"search",
+	"toJSON",
+	// "toString" excluded because Object::toString exists
+	"username"
+];
+
 
 
 it("behaves no differently by default", () =>
 {
 	const {IncompleteURL, IncompleteURLSearchParams} = customizeURL();
 
-	const params = new IncompleteURLSearchParams("?param=value");
+	const params = new IncompleteURLSearchParams("param=value");
 	const url = new IncompleteURL("http://hostname?param=value");
 
 	expect(params).to.have.property("sort");
@@ -59,41 +91,84 @@ it("behaves no differently by default", () =>
 
 describe("options", () =>
 {
-	it("noSearchParams = true", () =>
+	const paramsString = "param=value";
+	const urlString = `http://hostname?${paramsString}`;
+
+
+
+	describe("urlExclusions", () =>
 	{
-		const options = { noSearchParams:true };
-		const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
+		urlProperties.forEach(prop => it(`"${prop}"`, () =>
+		{
+			const options = { urlExclusions:[prop] };
+			const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
 
-		const url = new IncompleteURL("http://hostname?param=value");
+			const url = new IncompleteURL(urlString);
 
-		expect(url).to.not.have.property("searchParams");
+			expect(url).to.not.have.property(prop);
+		}));
+
+
+
+		it("all properties", () =>
+		{
+			const options = { urlExclusions:urlProperties };
+			const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
+
+			const url = new IncompleteURL(urlString);
+
+			urlProperties.forEach(prop => expect(url).to.not.have.property(prop));
+		});
 	});
 
 
 
-	it("noSort = true", () =>
+	describe("paramsExclusions", () =>
 	{
-		const options = { noSort:true };
-		const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
+		paramsProperties.forEach(prop => it(`"${prop}"`, () =>
+		{
+			const options = { paramsExclusions:[prop] };
+			const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
 
-		const params = new IncompleteURLSearchParams("?param=value");
-		const url = new IncompleteURL("http://hostname?param=value");
+			const params = new IncompleteURLSearchParams(paramsString);
+			const url = new IncompleteURL(urlString);
 
-		expect(params).to.not.have.property("sort");
-		expect(url.searchParams).to.not.have.property("sort");
+			expect(params).to.not.have.property(prop);
+			expect(url.searchParams).to.not.have.property(prop);
+		}));
+
+
+
+		it("all properties", () =>
+		{
+			const options = { paramsExclusions:paramsProperties };
+			const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
+
+			const params = new IncompleteURLSearchParams(paramsString);
+			const url = new IncompleteURL(urlString);
+
+			urlProperties.forEach(prop =>
+			{
+				expect(params).to.not.have.property(prop);
+				expect(url.searchParams).to.not.have.property(prop);
+			});
+		});
 	});
 
 
 
-	it("all options true", () =>
+	describe("paramsExclusions && urlExclusions", () =>
 	{
-		const options = { noSearchParams:true, noSort:true };
-		const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
+		it("does not cause conflicts", () =>
+		{
+			const options = { paramsExclusions:["sort"], urlExclusions:["searchParams"] };
+			const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
 
-		const params = new IncompleteURLSearchParams("?param=value");
-		const url = new IncompleteURL("http://hostname?param=value");
+			const params = new IncompleteURLSearchParams(paramsString);
+			const url = new IncompleteURL(urlString);
 
-		expect(params).to.not.have.property("sort");
-		expect(url).to.not.have.property("searchParams");
+			expect(params).to.not.have.property("sort");
+			expect(url).to.not.have.property("searchParams");
+		});
 	});
 });

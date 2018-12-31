@@ -17,9 +17,12 @@ const customizeURL = (options={}) =>
 		this[Symbol.iterator] = () => this.entries();
 		this[Symbol.toStringTag] = this._searchParams[Symbol.toStringTag];
 
-		// Extend all `URLSearchParams` methods except perhaps `sort`
-		Object.keys(URLSearchParams.prototype)
-		.filter(key => options.noSort ? key!=="sort" : true)
+		// Extend all `URLSearchParams` properties except any exclusions
+		getFilteredKeys
+		(
+			URLSearchParams.prototype,
+			options.paramsExclusions
+		)
 		.forEach(key => this[key] = (...args) =>
 		{
 			const returnValue = this._searchParams[key](...args);
@@ -62,9 +65,12 @@ const customizeURL = (options={}) =>
 
 		this[Symbol.toStringTag] = this._url[Symbol.toStringTag];
 
-		// Extend all `URL` getters/setters except perhaps `searchParams`
-		Object.keys(URL.prototype)
-		.filter(key => options.noSearchParams ? key!=="searchParams" : true)
+		// Extend all `URL` properties except any exclusions
+		getFilteredKeys
+		(
+			URL.prototype,
+			options.urlExclusions
+		)
 		.forEach(key =>
 		{
 			if (key === "searchParams")
@@ -98,6 +104,13 @@ const customizeURL = (options={}) =>
 	};
 
 	return { IncompleteURL, IncompleteURLSearchParams };
+};
+
+
+
+const getFilteredKeys = (source, exclusions=[]) =>
+{
+	return Object.keys(source).filter(key => !exclusions.includes(key));
 };
 
 

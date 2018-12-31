@@ -8,7 +8,7 @@ This is useful when simulating the incomplete `URL` implementations available in
 
 ## Installation
 
-[Node.js](http://nodejs.org/) `>= 6` is required. To install, type this at the command line:
+[Node.js](http://nodejs.org/) `>= 8` is required. To install, type this at the command line:
 ```shell
 npm install incomplete-url
 ```
@@ -19,24 +19,29 @@ npm install incomplete-url
 ```js
 const customizeURL = require('incomplete-url');
 
+const options = {
+  paramsExclusions: ['sort'],
+  urlExclusions: ['origin']
+};
+
 const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
 
 const url = new IncompleteURL('http://domain/');
-const params = new IncompleteURLSearchParams('?param=value');
+const params = new IncompleteURLSearchParams('param=value');
 ```
 
 
 ## Options
 
-### `noSearchParams`
-Type: `Boolean`  
-Default value: `false`  
-When set to `true`, the output `URL` class will not expose a `searchParams` property when instantiated.
+### `paramsExclusions`
+Type: `Array`  
+Default value: `[]`  
+The output `URLSearchParams` class (and `URL::searchParams`) will not expose each listed property/method when instantiated.
 
-### `noSort`
-Type: `Boolean`  
-Default value: `false`  
-When set to `true`, the output `URLSearchParams` class (and `URL#searchParams`) will not expose a `sort` method when instantiated.
+### `urlExclusions`
+Type: `Array`  
+Default value: `[]`  
+The output `URL` class will not expose each listed property/method when instantiated.
 
 
 [npm-image]: https://img.shields.io/npm/v/incomplete-url.svg
