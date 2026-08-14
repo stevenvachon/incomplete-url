@@ -1,29 +1,35 @@
 {
   "name": "incomplete-url",
-  "description": "Custom-remove features of a WHATWG URL implementation.",
-  "version": "4.0.0",
+  "description": "Custom-remove features of a URL implementation.",
+  "version": "5.0.0",
   "license": "MIT",
   "author": "Steven Vachon <contact@svachon.com> (https://svachon.com)",
   "repository": "github:stevenvachon/incomplete-url",
-  "dependencies": {
-    "universal-url": "^2.0.0"
-  },
+  "type": "module",
+  "exports": "./dist/index.js",
   "devDependencies": {
-    "chai": "^4.2.0",
-    "coveralls": "^3.0.2",
-    "mocha": "^5.2.0",
-    "nyc": "^13.1.0"
+    "@types/node": "^26.2.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "cspell": "^10.0.1",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.10"
   },
   "engines": {
-    "node": ">= 8"
+    "node": ">= 22"
   },
   "scripts": {
-    "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
-    "posttest": "nyc report --reporter=text-summary --reporter=html",
-    "test": "nyc --silent mocha test.js --check-leaks --bail"
+    "build": "npm run build:spellcheck && npm run build:lint && npm run build:typecheck:supplemental && npm run build:compile",
+    "build:compile": "tsc -p tsconfig.build.json",
+    "build:lint": "prettier --check '**/*.{config.js,json,md,ts}' '!coverage/**' '!dist/**'",
+    "build:spellcheck": "cspell '**/*.{config.js,json,md,ts}' '!coverage/**' '!dist/**' '!node_modules/**' --no-progress",
+    "build:typecheck:supplemental": "tsc --project tsconfig.check.json",
+    "prepublishOnly": "npm run build && npm test",
+    "test": "npm run test:watch -- --reporter=verbose --run",
+    "test:watch": "vitest dev --coverage --coverage.exclude=src/*.test.ts --coverage.include=src/*.ts --coverage.reporter=html --coverage.reporter=lcov --coverage.reporter=text"
   },
   "files": [
-    "index.js"
+    "dist"
   ],
   "keywords": [
     "uri",
