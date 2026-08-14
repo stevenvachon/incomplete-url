@@ -1,6 +1,6 @@
 {
   "name": "incomplete-url",
-  "description": "Custom-remove features of a WHATWG URL implementation.",
+  "description": "Custom-remove features of a URL implementation.",
   "version": "4.0.0",
   "license": "MIT",
   "author": "Steven Vachon <contact@svachon.com> (https://svachon.com)",
@@ -10,7 +10,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
     "nyc": "^13.1.0"
   },
@@ -18,8 +17,7 @@
     "node": ">= 8"
   },
   "scripts": {
-    "ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
-    "posttest": "nyc report --reporter=text-summary --reporter=html",
+    "posttest": "nyc report --reporter=text-summary --reporter=lcov",
     "test": "nyc --silent mocha test.js --check-leaks --bail"
   },
   "files": [

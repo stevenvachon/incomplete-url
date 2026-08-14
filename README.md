@@ -1,9 +1,9 @@
-# incomplete-url [![NPM Version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency Monitor][greenkeeper-image]][greenkeeper-url]
+# incomplete-url [![NPM Version][npm-image]][npm-url] ![Build Status][ghactions-image] [![Coverage Status][codecov-image]][codecov-url]
 
-> Custom-remove features of a WHATWG [`URL`](https://developer.mozilla.org/en/docs/Web/API/URL) implementation.
+> Custom-remove features of a [`URL`](https://mdn.io/URL) implementation.
 
 
-This is useful when simulating the incomplete `URL` implementations available in some of today's modern web browsers.
+This is useful when simulating the incomplete `URL` implementations available in some web browsers from 2017.
 
 
 ## Installation
@@ -24,7 +24,7 @@ const options = {
   urlExclusions: ['origin']
 };
 
-const {IncompleteURL, IncompleteURLSearchParams} = customizeURL(options);
+const { IncompleteURL, IncompleteURLSearchParams } = customizeURL(options);
 
 const url = new IncompleteURL('http://domain/');
 const params = new IncompleteURLSearchParams('param=value');
@@ -44,11 +44,8 @@ Default value: `[]`
 The output `URL` class will not expose each listed property/method when instantiated.
 
 
-[npm-image]: https://img.shields.io/npm/v/incomplete-url.svg
+[npm-image]: https://img.shields.io/npm/v/incomplete-url
 [npm-url]: https://npmjs.com/package/incomplete-url
-[travis-image]: https://img.shields.io/travis/stevenvachon/incomplete-url.svg
-[travis-url]: https://travis-ci.org/stevenvachon/incomplete-url
-[coveralls-image]: https://img.shields.io/coveralls/stevenvachon/incomplete-url.svg
-[coveralls-url]: https://coveralls.io/github/stevenvachon/incomplete-url
-[greenkeeper-image]: https://badges.greenkeeper.io/stevenvachon/incomplete-url.svg
-[greenkeeper-url]: https://greenkeeper.io/
+[ghactions-image]: https://img.shields.io/github/actions/workflow/status/stevenvachon/incomplete-url/test.yml?branch=4.x.x
+[codecov-image]: https://img.shields.io/codecov/c/github/stevenvachon/incomplete-url/4.x.x
+[codecov-url]: https://app.codecov.io/github/stevenvachon/incomplete-url/tree/4.x.x
